@@ -1,0 +1,23 @@
+.flex {
+    display: flex;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.m-1 {
+    margin: 10px;
+}
+
+.p-1 {
+    padding: 10px;
+}
+
+.hidden {
+    display: none;
+}
