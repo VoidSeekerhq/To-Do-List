@@ -45,6 +45,7 @@ function addTask() {
             const task = input.value;
             const listItem = document.createElement("li")
             listItem.classList.add("list-item")
+            listItem.classList.add("unchecked")
             listItem.innerHTML = `
             <div class="left">
                 <input type="checkbox" name="" id="">
@@ -55,9 +56,16 @@ function addTask() {
                 <button class="delete">Delete</button>
             </div>
             `
-            list.appendChild(listItem)
+            const firstChecked = document.querySelector(".list-item.checked");
+
+            if (firstChecked) {
+                list.insertBefore(listItem, firstChecked);
+            } else {
+                list.appendChild(listItem);
+            }
             input.value = ""
         }
+
     })
 
     add.addEventListener("click", () => {
@@ -69,9 +77,10 @@ function addTask() {
             const task = input.value;
             const listItem = document.createElement("li")
             listItem.classList.add("list-item")
+            listItem.classList.add("unchecked")
             listItem.innerHTML = `
         <div class="left">
-            <input type="checkbox" name="" id="">
+            <input class="check" type="checkbox" name="" id="">
             <p>${task}</p>
         </div>
         <div class="right">
@@ -79,9 +88,16 @@ function addTask() {
         <button class="delete">Delete</button>
         </div>
         `
-            list.appendChild(listItem)
+            const firstChecked = document.querySelector(".list-item.checked");
+
+            if (firstChecked) {
+                list.insertBefore(listItem, firstChecked);
+            } else {
+                list.appendChild(listItem);
+            }
             input.value = ""
         }
+
     })
 
 }
@@ -102,18 +118,120 @@ function deleteTask() {
 deleteTask()
 
 function editTask() {
-    const list = document.querySelector(".list")
+    document.querySelectorAll(".edit").forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const listItem = btn.closest(".list-item")
+            const label = listItem.querySelector(".task")
+            const input = listItem.querySelector(".task-input")
 
-    list.addEventListener("click", (e) => {
-        if (e.target.closest('.edit')) {
-            const input = document.createElement("input")
-            const left = e.target.closest('.left')
-            input.classList.add("temp-input")
-            input.setAttribute("type", "text")
-            left.appendChild(input)
-        }
+            function saveTask() {
+                const newValue = input.value.trim();
+
+                if (newValue) {
+                    label.innerText = newValue;
+                }
+
+                input.classList.add("hidden");
+                label.classList.remove("hidden");
+                btn.innerText = "Edit";
+
+                input.removeEventListener("keydown", handleEnter);
+            }
+
+            function handleEnter(e) {
+                if (e.key === "Enter") {
+                    saveTask();
+                }
+            }
+
+            if (input.classList.contains("hidden")) {
+                input.value = label.innerText;
+                input.classList.remove("hidden");
+                label.classList.add("hidden");
+                btn.innerText = "Save";
+                input.focus();
+                input.addEventListener("keydown", handleEnter);
+            }
+
+
+            else {
+                saveTask()
+            }
+        })
     })
-
 }
 
 editTask()
+
+function check() {
+    const list = document.querySelector(".list");
+
+    list.addEventListener("change", (e) => {
+        if (!e.target.classList.contains("check")) return;
+
+        const check = e.target;
+        const listItem = check.closest(".list-item");
+
+        if (check.checked) {
+            listItem.classList.add("checked");
+            listItem.classList.remove("unchecked");
+            list.appendChild(listItem);
+        } else {
+            listItem.classList.add("unchecked");
+            listItem.classList.remove("checked");
+            list.prepend(listItem);
+        }
+    });
+}
+
+check()
+
+function taskSort() {
+    const pills = document.querySelectorAll(".pill")
+
+    pills.forEach((pill) => {
+        pill.addEventListener("click", (e) => {
+            pills.forEach((pill) => {
+                pill.classList.remove("active");
+            })
+            const targetPill = e.target.closest(".pill")
+            const list = document.querySelector(".list")
+            targetPill.classList.add("active");
+            
+            if (targetPill.classList.contains("all")) {
+                const listItems = document.querySelectorAll(".list-item");
+                listItems.forEach((listItem) => {
+                    listItem.classList.remove("hidden");
+                });
+            }
+            
+            else if (targetPill.classList.contains("pending")) {
+                const listItems = document.querySelectorAll(".list-item")
+                const uncheckeds = document.querySelectorAll(".unchecked")
+                listItems.forEach((listItem) => {
+                    listItem.classList.add("hidden");
+                })
+                uncheckeds.forEach((unchecked) => {
+                    unchecked.classList.remove("hidden");
+                })
+            }
+
+            else if (targetPill.classList.contains("completed")) {
+                const checkeds = document.querySelectorAll(".checked");
+                const listItems = document.querySelectorAll(".list-item")
+
+                listItems.forEach((listItem) => {
+                    listItem.classList.add("hidden");
+                })
+                checkeds.forEach((checked) => {
+                    checked.classList.remove("hidden");
+                })
+                
+            }
+        })
+    })
+
+
+}
+
+taskSort()

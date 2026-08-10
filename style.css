@@ -113,14 +113,21 @@ form {
     height: 100%;
     width: 100%;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     overflow-y: scroll;
     scrollbar-width: none;
+    position: relative;
 }
 
 .list {
-    width: 100%;
+    width: 97%;
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    /* margin: 0px 12px; */
+    gap: 6px;
 }
 
 .list-item {
@@ -130,7 +137,10 @@ form {
     align-items: center;
     padding: 15px 25px;
     border-bottom: 1px solid #ffffff42;
-    border-radius: 0px 0px 16px 16px;
+    border-radius: 16px;
+    position: relative;
+    box-shadow: 3px 3px 8px 2px inset #ffffff42;
+    backdrop-filter: blur(0.42vw);
 }
 
 .left {
@@ -138,6 +148,23 @@ form {
     flex-direction: row;
     align-items: center;
     gap: 8px;
+}
+
+.task-input {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    box-shadow: 2px 2px 8px 2px inset #ffffff42;
+    backdrop-filter: blur(0.42vw);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 500;
+    width: 200px;
+}
+
+.task-input:focus {
+    outline: none;
 }
 
 .right {
@@ -167,4 +194,34 @@ button:hover {
 button:active {
     transform: scale(0.95);
     transition: transform 0.1s linear;
+}
+
+.checked {
+    background-color: rgba(0, 0, 0, 0.418);
+}
+
+.pills {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(0.85vw);
+    /* z-index: 1; */
+}
+
+.pill {
+    padding: 5px 10px;
+    border-radius: 16px;
+    cursor: pointer;
+    backdrop-filter: blur(0.42vw);
+    box-shadow: 2px 2px 8px 2px inset #ffffff42;
+    background: transparent;
+    font-size: 14px;
+}
+
+.active {
+    background-color: #ffffff41;
 }
