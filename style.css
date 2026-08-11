@@ -47,7 +47,7 @@ body {
     /* background-color: #1b1b1b5d; */
     box-shadow: 0.48vw 0.48vw 1.11vw 0.28vw inset rgba(255, 255, 255, 0.29);
     border-radius: 28px;
-    backdrop-filter: blur(0.42vw);
+    backdrop-filter: blur(0px);
     position: relative;
 }
 
@@ -63,7 +63,7 @@ body {
     width: 100%;
     z-index: -1;
     border-radius: 28px;
-    opacity: 0.5;
+    opacity: 0.2;
 }
 
 .header {
