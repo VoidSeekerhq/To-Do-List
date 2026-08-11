@@ -171,6 +171,7 @@ form {
     display: flex;
     flex-direction: row;
     align-items: center;
+    gap: 8px;
 }
 
 button {
@@ -196,6 +197,10 @@ button:active {
     transition: transform 0.1s linear;
 }
 
+.right button {
+    margin: 0;
+}
+
 .checked {
     background-color: rgba(0, 0, 0, 0.418);
 }
@@ -208,8 +213,6 @@ button:active {
     padding: 12px;
     position: sticky;
     top: 0;
-    backdrop-filter: blur(0.85vw);
-    /* z-index: 1; */
 }
 
 .pill {
@@ -224,4 +227,16 @@ button:active {
 
 .active {
     background-color: #ffffff41;
+}
+
+.control {
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    backdrop-filter: blur(0.42vw);
+    box-shadow: 2px 2px 8px 2px inset #ffffff42;
+    background: transparent;
+    padding: 2px;
 }

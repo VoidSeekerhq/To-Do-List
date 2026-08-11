@@ -49,11 +49,18 @@ function addTask() {
             listItem.innerHTML = `
             <div class="left">
                 <input type="checkbox" name="" id="">
-                <p>${task}</p>
+                <label class="task">${task}</label>
+                <input class="task-input hidden" type="text" placeholder="Enter your task">
             </div>
             <div class="right">
                 <button class="edit">Edit</button>
                 <button class="delete">Delete</button>
+                <div class="up control">
+                                <img src="./Assets/up.svg" alt="">
+                            </div>
+                            <div class="down control">
+                                <img src="./Assets/down.svg" alt="">
+                            </div>
             </div>
             `
             const firstChecked = document.querySelector(".list-item.checked");
@@ -81,11 +88,18 @@ function addTask() {
             listItem.innerHTML = `
         <div class="left">
             <input class="check" type="checkbox" name="" id="">
-            <p>${task}</p>
+            <label class="task">${task}</label>
+            <input class="task-input hidden" type="text" placeholder="Enter your task">
         </div>
         <div class="right">
         <button class="edit">Edit</button>
         <button class="delete">Delete</button>
+        <div class="up control">
+                                <img src="./Assets/up.svg" alt="">
+                            </div>
+                            <div class="down control">
+                                <img src="./Assets/down.svg" alt="">
+                            </div>
         </div>
         `
             const firstChecked = document.querySelector(".list-item.checked");
@@ -118,9 +132,13 @@ function deleteTask() {
 deleteTask()
 
 function editTask() {
-    document.querySelectorAll(".edit").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const listItem = btn.closest(".list-item")
+    const list = document.querySelector(".list")
+    if (!list) return;
+        list.addEventListener("click", (e) => {
+            const btn = e.target.closest(".edit");
+            if (!btn) return;
+            const listItem = e.target.closest(".list-item");
+            if (!listItem) return;
             const label = listItem.querySelector(".task")
             const input = listItem.querySelector(".task-input")
 
@@ -158,7 +176,6 @@ function editTask() {
                 saveTask()
             }
         })
-    })
 }
 
 editTask()
@@ -197,14 +214,14 @@ function taskSort() {
             const targetPill = e.target.closest(".pill")
             const list = document.querySelector(".list")
             targetPill.classList.add("active");
-            
+
             if (targetPill.classList.contains("all")) {
                 const listItems = document.querySelectorAll(".list-item");
                 listItems.forEach((listItem) => {
                     listItem.classList.remove("hidden");
                 });
             }
-            
+
             else if (targetPill.classList.contains("pending")) {
                 const listItems = document.querySelectorAll(".list-item")
                 const uncheckeds = document.querySelectorAll(".unchecked")
@@ -226,7 +243,7 @@ function taskSort() {
                 checkeds.forEach((checked) => {
                     checked.classList.remove("hidden");
                 })
-                
+
             }
         })
     })
@@ -235,3 +252,35 @@ function taskSort() {
 }
 
 taskSort()
+
+function taskPosition() {
+    const list = document.querySelector(".list")
+
+
+    list.addEventListener("click", (e) => {
+        const up = e.target.closest(".up")
+        const down = e.target.closest(".down")
+        const listItem = e.target.closest(".list-item")
+        const list = document.querySelector(".list")
+
+        if (up) {
+            const prevItem = listItem.previousElementSibling
+            if (prevItem) {
+                list.insertBefore(listItem, prevItem)
+            }
+        }
+        else if (down) {
+            const nextItem = listItem.nextElementSibling
+            if (nextItem) {
+                list.insertBefore(nextItem, listItem)
+            }
+        }
+    })
+
+}
+
+taskPosition()
+
+function localStorage() {
+    const list = document.querySelector(".list")
+}
