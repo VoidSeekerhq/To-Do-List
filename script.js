@@ -1,5 +1,17 @@
 console.log("JavaScript Initializing...")
 
+
+function getTasks() {
+    let grab = localStorage.getItem("list");
+    let list = document.querySelector(".list")
+
+    if (grab && list) {
+        list.innerHTML = grab;
+    }
+}
+
+getTasks()
+
 function indexRecorder(index) {
     return index;
 }
@@ -134,48 +146,48 @@ deleteTask()
 function editTask() {
     const list = document.querySelector(".list")
     if (!list) return;
-        list.addEventListener("click", (e) => {
-            const btn = e.target.closest(".edit");
-            if (!btn) return;
-            const listItem = e.target.closest(".list-item");
-            if (!listItem) return;
-            const label = listItem.querySelector(".task")
-            const input = listItem.querySelector(".task-input")
+    list.addEventListener("click", (e) => {
+        const btn = e.target.closest(".edit");
+        if (!btn) return;
+        const listItem = e.target.closest(".list-item");
+        if (!listItem) return;
+        const label = listItem.querySelector(".task")
+        const input = listItem.querySelector(".task-input")
 
-            function saveTask() {
-                const newValue = input.value.trim();
+        function saveTask() {
+            const newValue = input.value.trim();
 
-                if (newValue) {
-                    label.innerText = newValue;
-                }
-
-                input.classList.add("hidden");
-                label.classList.remove("hidden");
-                btn.innerText = "Edit";
-
-                input.removeEventListener("keydown", handleEnter);
+            if (newValue) {
+                label.innerText = newValue;
             }
 
-            function handleEnter(e) {
-                if (e.key === "Enter") {
-                    saveTask();
-                }
-            }
+            input.classList.add("hidden");
+            label.classList.remove("hidden");
+            btn.innerText = "Edit";
 
-            if (input.classList.contains("hidden")) {
-                input.value = label.innerText;
-                input.classList.remove("hidden");
-                label.classList.add("hidden");
-                btn.innerText = "Save";
-                input.focus();
-                input.addEventListener("keydown", handleEnter);
+            input.removeEventListener("keydown", handleEnter);
+        }
+
+        function handleEnter(e) {
+            if (e.key === "Enter") {
+                saveTask();
             }
+        }
+
+        if (input.classList.contains("hidden")) {
+            input.value = label.innerText;
+            input.classList.remove("hidden");
+            label.classList.add("hidden");
+            btn.innerText = "Save";
+            input.focus();
+            input.addEventListener("keydown", handleEnter);
+        }
 
 
-            else {
-                saveTask()
-            }
-        })
+        else {
+            saveTask()
+        }
+    })
 }
 
 editTask()
@@ -186,16 +198,18 @@ function check() {
     list.addEventListener("change", (e) => {
         if (!e.target.classList.contains("check")) return;
 
-        const check = e.target;
+        const check = e.target.closest('.check');
         const listItem = check.closest(".list-item");
 
         if (check.checked) {
             listItem.classList.add("checked");
             listItem.classList.remove("unchecked");
+            check.setAttribute('checked', 'checked');
             list.appendChild(listItem);
         } else {
             listItem.classList.add("unchecked");
             listItem.classList.remove("checked");
+            check.removeAttribute('checked');
             list.prepend(listItem);
         }
     });
@@ -220,6 +234,14 @@ function taskSort() {
                 listItems.forEach((listItem) => {
                     listItem.classList.remove("hidden");
                 });
+
+                list.addEventListener("change", (e) => {
+                    const check = e.target.closest(".check")
+                    const item = check.closest(".list-item")
+
+                    item.classList.remove("hidden")
+                })
+
             }
 
             else if (targetPill.classList.contains("pending")) {
@@ -230,6 +252,13 @@ function taskSort() {
                 })
                 uncheckeds.forEach((unchecked) => {
                     unchecked.classList.remove("hidden");
+                })
+
+                list.addEventListener("change", (e) => {
+                    const check = e.target.closest(".check")
+                    const item = check.closest(".list-item")
+
+                        item.classList.add("hidden");
                 })
             }
 
@@ -244,6 +273,12 @@ function taskSort() {
                     checked.classList.remove("hidden");
                 })
 
+                list.addEventListener("change", (e) => {
+                    const check = e.target.closest(".check")
+                    const item = check.closest(".list-item")
+
+                    item.classList.add("hidden");
+                })
             }
         })
     })
@@ -281,6 +316,33 @@ function taskPosition() {
 
 taskPosition()
 
-function localStorage() {
+function saveTasks() {
     const list = document.querySelector(".list")
+
+    list.addEventListener("click", (e) => {
+        let isBtn = e.target.closest('button');
+        let isInput = e.target.closest('input')
+        let isUp = e.target.closest('.up')
+        let isControl = e.target.closest('.control')
+
+        if (isBtn || isInput || isUp || isControl) {
+            localStorage.setItem("list", list.innerHTML)
+        }
+    })
+
+    list.addEventListener("change", (e) => {
+        let check = e.target.closest(".check")
+
+        if (check) {
+            localStorage.setItem("list", list.innerHTML)
+        }
+    })
+
+    list.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+            localStorage.setItem("list", list.innerHTML)
+        }
+    })
 }
+
+saveTasks()
